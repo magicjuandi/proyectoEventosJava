@@ -42,12 +42,12 @@ public class HistoricoRepositortimpl implements HistoricoRepository {
         }
         return historicosList;
     }
-    public void guardarHistorico(Historico historico, int intento)throws SQLException {
+    public void guardarHistorico(Historico historico)throws SQLException {
         String sql;
         sql = "INSERT INTO historico (id_usuario, intento, fecha, tiempo) VALUES (?,?,?,?);";
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setLong(1, historico.getUsuario().getId());
-            stmt.setInt(2, intento);
+            stmt.setInt(2, historico.getIntento());
             stmt.setDate(3, Date.valueOf(historico.getFecha().now()));
             stmt.setTime(4, Time.valueOf(historico.getTiempo().now()));
             System.out.println("Historico Creado!");

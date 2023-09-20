@@ -155,7 +155,7 @@ public class UsuarioRepositoryimpl implements UsuarioRepository {
                 Historico historico = Historico.builder()
                         .usuario(usuario)
                         .intento(contadorIntento).build();
-                hRepo.guardarHistorico(historico, contadorIntento);
+                hRepo.guardarHistorico(historico);
                 contadorIntento = 4;
             } else {
                 contadorIntento++;

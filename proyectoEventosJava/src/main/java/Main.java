@@ -1,5 +1,9 @@
+import domain.models.Like;
+import domain.models.Producto;
 import domain.models.Usuario;
 import repository.impl.HistoricoRepositortimpl;
+import repository.impl.LikeRepositoryimpl;
+import repository.impl.ProductoRepositoryimpl;
 import repository.impl.UsuarioRepositoryimpl;
 import singledomain.ConexionDB;
 
@@ -12,6 +16,8 @@ public class Main {
         try (Connection conn = ConexionDB.getInstance()) {
             UsuarioRepositoryimpl usRepo = new UsuarioRepositoryimpl();
             HistoricoRepositortimpl hisRepo = new HistoricoRepositortimpl();
+            ProductoRepositoryimpl proRepo = new ProductoRepositoryimpl();
+            LikeRepositoryimpl likeRepo = new LikeRepositoryimpl();
             String opcion;
 
             do{
@@ -20,7 +26,9 @@ public class Main {
                     "\n2. Ingreso" +
                     "\n3. Actualizar"+
                     "\n4. Listar"+
-                    "\n5. Salida");
+                    "\n5. Registro Productos"+
+                    "\n6. Registro Likes"+
+                    "\n7. Salida");
                 opcion = scan.next();
                 switch (opcion){
                     case "1":{
@@ -67,9 +75,34 @@ public class Main {
                         usRepo.listaUsuarios().forEach(System.out::println);
                         break;
                     }
+                    case "5":{
+                        System.out.println("Registro Productos");
+                        System.out.println("Nombre");
+                        String nombreS = scan.next();
+                        System.out.println("Precio");
+                        Double precioS = scan.nextDouble();
+                        Producto producto = Producto.builder()
+                                .nombre(nombreS)
+                                .precio(precioS).build();
+                        proRepo.guardarProducto(producto);
+                        break;
+                    }
+                    case "6":{
+                        System.out.println("Registro Likes");
+                        System.out.println("Id Usuario");
+                        Long idU = scan.nextLong();
+                        System.out.println("Id Producto");
+                        Long idP = scan.nextLong();
+                        Like like = Like.builder()
+                                .usuario(usRepo.byId(idU))
+                                .producto(proRepo.byId(idP)).build();
+                        System.out.println(like.getUsuario());
+                        System.out.println(like.getProducto());
+                        likeRepo.guardarLike(like);
+                    }
                 }
 
-            }while(!opcion.equals("5"));
+            }while(!opcion.equals("7"));
         } catch (Exception e) {
 
         }

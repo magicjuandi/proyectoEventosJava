@@ -48,7 +48,7 @@ public class LikeRepositoryimpl {
         String sql = "";
         if (like.getUsuario().getId() != null && like.getUsuario().getId() > 0 && like.getProducto().getId() != null
                 && like.getProducto().getId() > 0) {
-            sql = "INSERT INTO likes (id_usuario, id_producto) VALUES (?,?);";
+            sql = "INSERT INTO likes (id_usuario, id_producto) VALUES (?,?) ON DUPLICATE KEY UPDATE likes.estado = 1;";
         }
         try (PreparedStatement stmt = getConnection().prepareStatement(sql)) {
             stmt.setLong(1, like.getUsuario().getId());
